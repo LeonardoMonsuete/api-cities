@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as  yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { ICidade } from '../../interfaces/CityInterface';
+import { StatusCodes } from 'http-status-codes';
 
 export const createValidation = validation((getSchema) => ({
   body: getSchema<ICidade>(yup.object().shape({
@@ -10,5 +11,5 @@ export const createValidation = validation((getSchema) => ({
 }));
 
 export const create = async (req: Request<{},{},ICidade>, res: Response) => {
-  return res.send(req.body);
+  return res.status(StatusCodes.CREATED).json(1);
 };
