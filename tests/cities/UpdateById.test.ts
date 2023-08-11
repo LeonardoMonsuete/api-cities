@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
-describe('Cities - Update', () => { 
+describe('Cities - UpdateById', () => { 
 
   it('Valida parametro inválido', async () => {
     const res1 = await testServer.put('/cidades/0').send({

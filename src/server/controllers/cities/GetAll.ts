@@ -20,7 +20,9 @@ export const getAllValidation = validation((getSchema) => ({
 }));
 
 export const getAll = async (req: Request<{},{},{},IQueryProps>, res: Response) => {
+  res.setHeader('access-control-expose-headers','x-total-count');
   if(cities.length > 0){
+    res.setHeader('x-total-count', cities.length);
     return res.json(cities);
   }
   return res.status(StatusCodes.NO_CONTENT).send('Não há cidades à encontrar');

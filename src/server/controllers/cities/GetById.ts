@@ -11,5 +11,16 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById = async (req: Request<IParamProps>, res: Response) => {
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado');
+  if(Number(req.params.id) === 99999){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: 'Registro não econtrado'
+      }
+    });
+  }
+
+  return res.status(StatusCodes.OK).json({
+    id: req.params.id,
+    nome: 'Jaguariuna'
+  });
 };
