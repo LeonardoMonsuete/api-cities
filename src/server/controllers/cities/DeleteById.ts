@@ -3,10 +3,7 @@ import * as  yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { IParamProps } from '../../interfaces/ParamsProps';
 import { StatusCodes } from 'http-status-codes';
-import { PrismaClient } from '@prisma/client';
 import { CitiesProvider } from '../../providers/cities';
-
-const prisma = new PrismaClient();
 
 export const deleteByIdValidation = validation((getSchema) => ({
   params: getSchema<IParamProps>(yup.object().shape({

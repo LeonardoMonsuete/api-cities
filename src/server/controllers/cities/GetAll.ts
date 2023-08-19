@@ -3,9 +3,7 @@ import * as  yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { IQueryProps } from '../../interfaces/QueryPropsInterface';
 import { StatusCodes } from 'http-status-codes';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { CitiesProvider } from '../../providers/cities';
 
 export const getAllValidation = validation((getSchema) => ({
   query: getSchema<IQueryProps>(yup.object().shape({
@@ -16,11 +14,16 @@ export const getAllValidation = validation((getSchema) => ({
 }));
 
 export const getAll = async (req: Request<{},{},{},IQueryProps>, res: Response) => {
-  const cities = await prisma.city.findMany();
   res.setHeader('access-control-expose-headers','x-total-count');
-  if(cities.length > 0){
-    res.setHeader('x-total-count', cities.length);
-    return res.json(cities);
+  const cities = await CitiesProvider.getAll();
+  if(cities instanceof Error){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
   }
-  return res.status(StatusCodes.NO_CONTENT).send();
+
+  if(cities.length < 1){
+    return res.status(StatusCodes.NO_CONTENT).send();
+  }
+
+  res.setHeader('x-total-count', cities.length);
+  return res.json(cities);
 };

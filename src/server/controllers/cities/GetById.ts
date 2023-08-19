@@ -3,6 +3,7 @@ import * as  yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { IParamProps } from '../../interfaces/ParamsProps';
 import { StatusCodes } from 'http-status-codes';
+import { CitiesProvider } from '../../providers/cities';
 
 export const getByIdValidation = validation((getSchema) => ({
   params: getSchema<IParamProps>(yup.object().shape({
@@ -11,16 +12,13 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById = async (req: Request<IParamProps>, res: Response) => {
-  if(Number(req.params.id) === 99999){
+  const citySearch = await CitiesProvider.getById(Number(req.params.id));
+  if(citySearch instanceof Error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       errors: {
-        default: 'Registro não econtrado'
+        default: citySearch.message
       }
     });
   }
-
-  return res.status(StatusCodes.OK).json({
-    id: req.params.id,
-    nome: 'Jaguariuna'
-  });
+  return res.status(StatusCodes.OK).json(citySearch);
 };

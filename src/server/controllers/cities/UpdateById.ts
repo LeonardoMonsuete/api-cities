@@ -18,7 +18,7 @@ export const updateByIdValidation = validation((getSchema) => ({
 export const updateById = async (req: Request<IParamProps, {}, ICity>, res: Response) => {
   const idParam = Number(req.params.id);
   const newData = req.body;
-  const updatedCity = CitiesProvider.updateById(idParam, newData);
+  const updatedCity = await CitiesProvider.updateById(idParam, newData);
 
   if(updatedCity instanceof Error){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -28,5 +28,5 @@ export const updateById = async (req: Request<IParamProps, {}, ICity>, res: Resp
     });
   }
 
-  return res.status(StatusCodes.ACCEPTED).json(updatedCity);
+  return res.status(StatusCodes.OK).json(updatedCity);
 };

@@ -3,23 +3,16 @@ import { ICity } from '../../interfaces/CityInterface';
 
 const prisma = new PrismaClient();
 
-export const updateById = async (idParam: number, newData: ICity): Promise<ICity | Error > => {
+export const getById = async (idParam: number): Promise<ICity | Error > => {
   try {
     const citySearch = await prisma.city.findUnique({ where: { id: idParam } });
     if(!citySearch){
       return new Error(`Cidade de id:${idParam} não encontrada`);
     }
-    const updatedCity = await prisma.city.update({
-      where: {
-        id: citySearch.id
-      }, 
-      data: {
-        nome: newData.nome
-      }
-    });
-    return updatedCity;
+
+    return citySearch;
   } catch (error) {
     console.error(error);
-    return Error('Erro ao atualizar cidade');
+    return Error('Erro ao buscar cidade');
   }
 };
