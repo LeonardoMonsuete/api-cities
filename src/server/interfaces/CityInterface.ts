@@ -1,3 +1,3 @@
-export interface ICidade {
+export interface ICity {
   nome: string
 }

@@ -3,25 +3,30 @@ import * as  yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { IParamProps } from '../../interfaces/ParamsProps';
 import { StatusCodes } from 'http-status-codes';
-import { ICidade } from '../../interfaces/CityInterface';
+import { ICity } from '../../interfaces/CityInterface';
+import { CitiesProvider } from '../../providers/cities';
 
 export const updateByIdValidation = validation((getSchema) => ({
   params: getSchema<IParamProps>(yup.object().shape({
     id: yup.number().required().moreThan(0),
   })),
-  body: getSchema<ICidade>(yup.object().shape({
+  body: getSchema<ICity>(yup.object().shape({
     nome: yup.string().required().min(3),
   })),
 }));
 
-export const updateById = async (req: Request<IParamProps, {}, ICidade>, res: Response) => {
-  const registerExists = req.params.id;
-  if(registerExists !== undefined && registerExists < 2){
-    return res.status(StatusCodes.ACCEPTED).json(1);
+export const updateById = async (req: Request<IParamProps, {}, ICity>, res: Response) => {
+  const idParam = Number(req.params.id);
+  const newData = req.body;
+  const updatedCity = CitiesProvider.updateById(idParam, newData);
+
+  if(updatedCity instanceof Error){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: updatedCity.message
+      }
+    });
   }
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    errors: {
-      default: 'Registro não encontrado'
-    }
-  });
+
+  return res.status(StatusCodes.ACCEPTED).json(updatedCity);
 };
