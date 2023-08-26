@@ -1,3 +1,4 @@
 export interface ICity {
-  nome: string
+  name: string
+  stateId: number
 }

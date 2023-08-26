@@ -14,9 +14,11 @@ export const updateById = async (idParam: number, newData: ICity): Promise<ICity
         id: citySearch.id
       }, 
       data: {
-        nome: newData.nome
+        name: newData.name,
+        stateId: newData.stateId
       }
     });
+
     return updatedCity;
   } catch (error) {
     console.error(error);

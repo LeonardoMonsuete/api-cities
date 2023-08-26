@@ -5,7 +5,7 @@ describe('Cities - Create', () => {
 
   it('Valida se criou novo registro', async () => {
     const res1 = await testServer.post('/cidades').send({
-      nome: 'Jaguariuna'
+      name: 'Jaguariuna'
     });
 
     expect(res1.statusCode).toEqual(StatusCodes.CREATED);
@@ -15,11 +15,11 @@ describe('Cities - Create', () => {
 
   it('Valida que não deve-se criar cidade com nome curto (>2 caracteres)', async () => {
     const res1 = await testServer.post('/cidades').send({
-      nome: 'Ja'
+      name: 'Ja'
     });
 
     expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-    expect(res1.body).toHaveProperty('errorsResult.body.nome');
+    expect(res1.body).toHaveProperty('errorsResult.body.name');
 
   });
 

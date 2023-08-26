@@ -11,6 +11,19 @@ datasource db {
 }
 
 model City {
-  id        Int      @id @default(autoincrement())
-  nome      String
+  id            Int      @id @default(autoincrement())
+  name          String
+  state         State @relation(fields: [stateId], references: [id])
+  stateId       Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model State {
+  id            Int      @id @default(autoincrement())
+  name          String
+  abbreviation  String @unique
+  cities        City[]
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 }

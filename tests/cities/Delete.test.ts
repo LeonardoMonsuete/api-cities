@@ -11,7 +11,7 @@ describe('Cities - DeleteById', () => {
 
   it('Valida que encontrou e deletou registro', async () => {
     const res1 = await testServer.post('/cidades').send({
-      nome: 'Jaguariuna'
+      name: 'Jaguariuna'
     });
 
     expect(res1.statusCode).toEqual(StatusCodes.CREATED);

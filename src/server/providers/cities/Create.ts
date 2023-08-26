@@ -7,7 +7,8 @@ export const create = async (cityInput: ICity): Promise<number | Error> => {
   try {
     const cityCreation = await prisma.city.create({
       data: {
-        nome: cityInput.nome
+        name: cityInput.name,
+        stateId: cityInput.stateId
       }
     });
     return cityCreation.id;
